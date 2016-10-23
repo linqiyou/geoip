@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{91E20027-4792-40FD-A2A3-448540E23FFE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9456157C-69E8-489E-B7AF-2D8CDF206B36}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GeoIP", "src\GeoIP\GeoIP.xproj", "{C6836930-1E55-48EE-AB20-0A6FA97F43DB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C6836930-1E55-48EE-AB20-0A6FA97F43DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6836930-1E55-48EE-AB20-0A6FA97F43DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6836930-1E55-48EE-AB20-0A6FA97F43DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6836930-1E55-48EE-AB20-0A6FA97F43DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C6836930-1E55-48EE-AB20-0A6FA97F43DB} = {91E20027-4792-40FD-A2A3-448540E23FFE}
+	EndGlobalSection
+EndGlobal
