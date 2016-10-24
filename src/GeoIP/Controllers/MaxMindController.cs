@@ -33,7 +33,7 @@ namespace GeoIP.Controllers
         {
             using (var reader = new DatabaseReader(this.hostingEnvironment.ContentRootPath + "/Databases/Maxmind/GeoLite2-City.mmdb"))
             {
-                dynamic result;
+                Object result;
                 var city = reader.City(id);
                 
                 if (city != null)

@@ -240,3 +240,4 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/src/GeoIP/Databases/MaxMind/GeoLite2-City.mmdb
