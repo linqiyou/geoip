@@ -7,6 +7,7 @@ using MaxMind.GeoIP2;
 using GeoIP.Models;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Hosting;
+using GeoIP.Utils;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,25 +23,30 @@ namespace GeoIP.Controllers
             this.hostingEnvironment = hostingEnvironment;
         }
 
-        public IActionResult Index()
+        // GET: api/maxmind?ipaddress=123.123.123.123
+        [HttpGet]
+        public string GetGeoLocation([FromQuery]string ipAddress)
         {
-            return View();
-        }
+            var error = new Validation()
+                                .IsNotNullOrEmpty(ipAddress)
+                                .IsIPAddress(ipAddress)
+                                .Validate();
 
-        // GET: api/maxmind/id
-        [HttpGet("{id}")]
-        public string Get(string id)
-        {
+            if (error != null)
+            {
+                return JsonConvert.SerializeObject(error);
+            }
+
             using (var reader = new DatabaseReader(this.hostingEnvironment.ContentRootPath + "/Databases/Maxmind/GeoLite2-City.mmdb"))
             {
                 Object result;
-                var city = reader.City(id);
+                var city = reader.City(ipAddress);
                 
                 if (city != null)
                 {
                     result = new GeoLocation()
                     {
-                        IPAddress = id,
+                        IPAddress = ipAddress,
                         City = city.City.Name,
                         Country = city.Country.Name,
                         Latitude = city.Location.Latitude,
@@ -51,7 +57,7 @@ namespace GeoIP.Controllers
                 {
                     result = new Error()
                     {
-                        ErrorMessage = "GeoIP not found"
+                        ErrorMessage = "Geo location not found"
                     };
                 }
 
