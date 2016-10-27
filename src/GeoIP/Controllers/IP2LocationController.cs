@@ -42,10 +42,10 @@ namespace GeoIP.Controllers
             var result = QueryWebService(ipAddress).Result;
             
 
-            return result;
+            return JsonConvert.SerializeObject(result);
         }
 
-        private async Task<string> QueryWebService(string ipAddress)
+        private async Task<object> QueryWebService(string ipAddress)
         {
             var url = $"http://localhost:3000/ip2location?ipaddress={ipAddress}";
 
@@ -55,7 +55,30 @@ namespace GeoIP.Controllers
             {
                 var queriedResult = await content.ReadAsStringAsync();
 
-                return queriedResult;
+                var json = JObject.Parse(queriedResult);
+
+                Object result;
+                var errorMessage = (string)json["ErrorMessage"];
+                if (errorMessage == null)
+                {
+                    result = new GeoLocation()
+                    {
+                        IPAddress = (string)json["IPAddress"],
+                        City = (string)json["City"],
+                        Country = (string)json["Country"],
+                        Latitude = (double)json["Latitude"],
+                        Longitude = (double)json["Longitude"]
+                    };
+                }
+                else
+                {
+                    result = new Error()
+                    {
+                        ErrorMessage = errorMessage
+                    };
+                }
+
+                return result;
             }
         }
     }
