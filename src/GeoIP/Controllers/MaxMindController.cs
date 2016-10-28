@@ -8,6 +8,7 @@ using GeoIP.Models;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Hosting;
 using GeoIP.Utils;
+using GeoIP.Executers;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -37,33 +38,11 @@ namespace GeoIP.Controllers
                 return JsonConvert.SerializeObject(error);
             }
 
-            using (var reader = new DatabaseReader(this.hostingEnvironment.ContentRootPath + "/Databases/Maxmind/GeoLite2-City.mmdb"))
-            {
-                Object result;
-                var city = reader.City(ipAddress);
-                
-                if (city != null)
-                {
-                    result = new GeoLocation()
-                    {
-                        IPAddress = ipAddress,
-                        City = city.City.Name,
-                        Country = city.Country.Name,
-                        Latitude = city.Location.Latitude,
-                        Longitude = city.Location.Longitude
-                    };
-                }
-                else
-                {
-                    result = new Error()
-                    {
-                        ErrorMessage = "Geo location not found"
-                    };
-                }
+            var dataSource = this.hostingEnvironment.ContentRootPath + "/Databases/Maxmind/GeoLite2-City.mmdb";
 
-                return JsonConvert.SerializeObject(result);
-                
-            }
+            var geolocation = new MaxMindQuery().Query(ipAddress, dataSource);
+
+            return geolocation.Result;
         }
     }
 }

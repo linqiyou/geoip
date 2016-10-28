@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using GeoIP.Models;
+using GeoIP.Executers;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -39,47 +40,11 @@ namespace GeoIP.Controllers
             }
 
 
-            var result = QueryWebService(ipAddress).Result;
-            
+            var dataSource = "http://localhost:3000/ip2location";
 
-            return JsonConvert.SerializeObject(result);
-        }
+            var geolocation = new IP2LocationQuery().Query(ipAddress, dataSource);
 
-        private async Task<object> QueryWebService(string ipAddress)
-        {
-            var url = $"http://localhost:3000/ip2location?ipaddress={ipAddress}";
-
-            using (var client = new HttpClient())
-            using (var response = await client.GetAsync(url))
-            using (var content = response.Content)
-            {
-                var queriedResult = await content.ReadAsStringAsync();
-
-                var json = JObject.Parse(queriedResult);
-
-                Object result;
-                var errorMessage = (string)json["ErrorMessage"];
-                if (errorMessage == null)
-                {
-                    result = new GeoLocation()
-                    {
-                        IPAddress = (string)json["IPAddress"],
-                        City = (string)json["City"],
-                        Country = (string)json["Country"],
-                        Latitude = (double)json["Latitude"],
-                        Longitude = (double)json["Longitude"]
-                    };
-                }
-                else
-                {
-                    result = new Error()
-                    {
-                        ErrorMessage = errorMessage
-                    };
-                }
-
-                return result;
-            }
+            return geolocation.Result;
         }
     }
 }
