@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
-using GeoIP.Utils;
 using Newtonsoft.Json;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
@@ -29,17 +28,6 @@ namespace GeoIP.Controllers
         [HttpGet]
         public string GetGeoLocation([FromQuery]string ipAddress)
         {
-            var error = new Validation()
-                                .IsNotNullOrEmpty(ipAddress)
-                                .IsIPAddress(ipAddress)
-                                .Validate();
-
-            if (error != null)
-            {
-                return JsonConvert.SerializeObject(error);
-            }
-
-
             var dataSource = "http://localhost:3000/ip2location";
 
             var geolocation = new IP2LocationQuery().Query(ipAddress, dataSource);

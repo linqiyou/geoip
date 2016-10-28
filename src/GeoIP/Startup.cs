@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeoIP.Middleware;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -60,6 +61,8 @@ namespace GeoIP
             app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseStaticFiles();
+
+            app.UseUseUrlValidation();
 
             app.UseMvc(routes =>
             {
