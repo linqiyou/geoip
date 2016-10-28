@@ -24,16 +24,16 @@ namespace GeoIP.Executers
                 var json = JObject.Parse(queriedResult);
 
                 Object result;
-                var errorMessage = (string)json["ErrorMessage"];
+                var errorMessage = (string)json["error_message"];
                 if (errorMessage == null)
                 {
-                    result = new GeoLocation()
+                    result = new Geolocation()
                     {
-                        IPAddress = (string)json["IPAddress"],
-                        City = (string)json["City"],
-                        Country = (string)json["Country"],
-                        Latitude = (double)json["Latitude"],
-                        Longitude = (double)json["Longitude"]
+                        IPAddress = (string)json["ipaddress"],
+                        City = (string)json["city"],
+                        Country = (string)json["country"],
+                        Latitude = (double)json["latitude"],
+                        Longitude = (double)json["longitude"]
                     };
                 }
                 else

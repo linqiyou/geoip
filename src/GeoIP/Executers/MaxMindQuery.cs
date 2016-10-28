@@ -19,7 +19,7 @@ namespace GeoIP.Executers
 
                 if (city != null)
                 {
-                    result = new GeoLocation()
+                    result = new Geolocation()
                     {
                         IPAddress = ipAddress,
                         City = city.City.Name,
