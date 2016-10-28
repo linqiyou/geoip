@@ -4,21 +4,21 @@
 
 <div class="row">
     <div class="col-md-12">
-        <h2>Service</h2>
-        RESTful service for retrieving geolocation from IP address using MaxMind GeoLite2 and IP2Location Lite databases.
+        <h3>Geolocation Service</h3>
+        RESTful service for retrieving geolocations from IP addresses using MaxMind GeoLite2 and IP2Location Lite databases.
     </div>
     <div class="col-md-12">
-        <h2>Endpoints</h2>
-        <h3>MaxMind</h3>
+        <h3>Endpoints</h3>
+        <h4>MaxMind</h4>
         <pre>http://geoip.tech/api/maxmind?ipaddress={ip-address}</pre>
-        <h3>IP2Location</h3>
+        <h4>IP2Location</h4>
         <pre>http://geoip.tech/api/ip2location?ipaddress={ip-address}</pre>
         Make a HTTP GET request to the endpoints to retrieve the IP address geolocation. Replace {ip-address} with the IP address to be searched.
     </div>
     <div class="col-md-12">
-        <h2>Usage Example</h2>
+        <h3>Usage Example</h3>
         <pre>curl http://geoip.tech/api/maxmind?ipaddress=123.123.123.123</pre>
-        <h3>Result Example</h3> 
+        <h4>Result Example</h4> 
         <pre>
         {
             "ipaddress":"123.123.123.123",
@@ -28,7 +28,7 @@
             "longitude":116.3883
         }
         </pre>
-        <h3>Error Example</h3>
+        <h4>Error Example</h4>
         <pre>
         {
             "error_message":"Invalid IP address provided"
