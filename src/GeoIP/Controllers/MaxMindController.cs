@@ -27,7 +27,7 @@ namespace GeoIP.Controllers
         [HttpGet]
         public string GetGeoLocation([FromQuery]string ipAddress)
         {
-            var dataSource = this.hostingEnvironment.ContentRootPath + "/Databases/Maxmind/GeoLite2-City.mmdb";
+            var dataSource = this.hostingEnvironment.ContentRootPath + "/Databases/MaxMind/GeoLite2-City.mmdb";
 
             var geolocation = new MaxMindQuery().Query(ipAddress, dataSource);
 
