@@ -28,7 +28,7 @@ namespace GeoIP.Controllers
         [HttpGet]
         public string GetGeoLocation([FromQuery]string ipAddress)
         {
-            var dataSource = "http://localhost:3000/ip2location";
+            var dataSource = "http://localhost:4000/ip2location";
 
             var geolocation = new IP2LocationQuery().Query(ipAddress, dataSource);
 
