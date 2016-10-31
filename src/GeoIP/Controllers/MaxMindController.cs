@@ -25,13 +25,13 @@ namespace GeoIP.Controllers
 
         // GET: api/maxmind?ipaddress=123.123.123.123
         [HttpGet]
-        public string GetGeoLocation([FromQuery]string ipAddress)
+        public JsonResult GetGeoLocation([FromQuery]string ipAddress)
         {
             var dataSource = this.hostingEnvironment.ContentRootPath + "/Databases/MaxMind/GeoLite2-City.mmdb";
 
             var geolocation = new MaxMindQuery().Query(ipAddress, dataSource);
 
-            return geolocation.Result;
+            return Json(geolocation.Result);
         }
     }
 }

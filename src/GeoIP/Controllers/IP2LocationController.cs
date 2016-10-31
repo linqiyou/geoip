@@ -26,13 +26,13 @@ namespace GeoIP.Controllers
 
         // GET api/ip2location?ipaddress=123.123.123.123
         [HttpGet]
-        public string GetGeoLocation([FromQuery]string ipAddress)
+        public JsonResult GetGeoLocation([FromQuery]string ipAddress)
         {
             var dataSource = "http://localhost:4000/ip2location";
 
             var geolocation = new IP2LocationQuery().Query(ipAddress, dataSource);
 
-            return geolocation.Result;
+            return Json(geolocation.Result);
         }
     }
 }
