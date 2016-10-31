@@ -1,5 +1,6 @@
 ﻿using GeoIP.Models;
 using MaxMind.GeoIP2;
+using MaxMind.GeoIP2.Exceptions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,33 +13,44 @@ namespace GeoIP.Executers
     {
         public async Task<string> Query(string ipAddress, string dataSource)
         {
-            using (var reader = new DatabaseReader(dataSource))
+            Object result;
+
+            try
             {
-                Object result;
-                var city = reader.City(ipAddress);
-
-                if (city != null)
+                using (var reader = new DatabaseReader(dataSource))
                 {
-                    result = new Geolocation()
-                    {
-                        IPAddress = ipAddress,
-                        City = city.City.Name,
-                        Country = city.Country.Name,
-                        Latitude = city.Location.Latitude,
-                        Longitude = city.Location.Longitude
-                    };
-                }
-                else
-                {
-                    result = new Error()
-                    {
-                        ErrorMessage = "Geolocation not found"
-                    };
-                }
+                    var city = reader.City(ipAddress);
 
-                return JsonConvert.SerializeObject(result);
+                    if (city != null)
+                    {
+                        result = new Geolocation()
+                        {
+                            IPAddress = ipAddress,
+                            City = city.City.Name,
+                            Country = city.Country.Name,
+                            Latitude = city.Location.Latitude,
+                            Longitude = city.Location.Longitude
+                        };
+                    }
+                    else
+                    {
+                        result = new Error()
+                        {
+                            ErrorMessage = "Geolocation not found"
+                        };
+                    }
 
+                }
             }
+            catch (AddressNotFoundException ex)
+            {
+                result = new Error()
+                {
+                    ErrorMessage = ex.Message
+                };
+            }
+
+            return JsonConvert.SerializeObject(result);
         }
     }
 }
