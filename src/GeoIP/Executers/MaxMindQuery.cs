@@ -21,24 +21,14 @@ namespace GeoIP.Executers
                 {
                     var city = reader.City(ipAddress);
 
-                    if (city != null)
+                    result = new Geolocation()
                     {
-                        result = new Geolocation()
-                        {
-                            IPAddress = ipAddress,
-                            City = city.City.Name,
-                            Country = city.Country.Name,
-                            Latitude = city.Location.Latitude,
-                            Longitude = city.Location.Longitude
-                        };
-                    }
-                    else
-                    {
-                        result = new Error()
-                        {
-                            ErrorMessage = "Geolocation not found"
-                        };
-                    }
+                        IPAddress = ipAddress,
+                        City = city.City.Name,
+                        Country = city.Country.Name,
+                        Latitude = city.Location.Latitude,
+                        Longitude = city.Location.Longitude
+                    };
 
                 }
             }
