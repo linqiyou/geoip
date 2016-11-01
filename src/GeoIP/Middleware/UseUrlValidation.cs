@@ -34,6 +34,8 @@ namespace GeoIP.Middleware
                         ErrorMessage = "IP address not provided"
                     };
 
+                    httpContext.Response.ContentType = "application/json";
+
                     await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(error));
                     return;
                 }
@@ -48,6 +50,8 @@ namespace GeoIP.Middleware
                     {
                         ErrorMessage = "Invalid IP address provided"
                     };
+
+                    httpContext.Response.ContentType = "application/json";
 
                     await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(error));
                     return;
