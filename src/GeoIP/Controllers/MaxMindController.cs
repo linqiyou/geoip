@@ -8,6 +8,7 @@ using GeoIP.Models;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Hosting;
 using GeoIP.Executers;
+using System.Text;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -31,7 +32,7 @@ namespace GeoIP.Controllers
 
             var geolocation = new MaxMindQuery().Query(ipAddress, dataSource);
 
-            return Json(geolocation.Result);
+            return this.Json(geolocation.Result);
         }
     }
 }

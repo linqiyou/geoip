@@ -7,6 +7,6 @@ namespace GeoIP.Executers
 {
     interface IQuery
     {
-        Task<string> Query(string ipAddress, string dataSource);
+        Task<object> Query(string ipAddress, string dataSource);
     }
 }

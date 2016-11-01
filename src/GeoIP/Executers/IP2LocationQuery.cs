@@ -11,11 +11,11 @@ namespace GeoIP.Executers
 {
     public class IP2LocationQuery : IQuery
     {
-        public async Task<string> Query(string ipAddress, string dataSource)
+        public async Task<object> Query(string ipAddress, string dataSource)
         {
             string url = $"{dataSource}?ipaddress={ipAddress}";
 
-            Object result;
+            object result;
 
             try
             {
@@ -56,7 +56,7 @@ namespace GeoIP.Executers
                 };
             }
 
-            return JsonConvert.SerializeObject(result);
+            return result;
         }
     }
 }

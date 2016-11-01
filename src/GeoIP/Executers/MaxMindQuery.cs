@@ -11,9 +11,9 @@ namespace GeoIP.Executers
 {
     public class MaxMindQuery : IQuery
     {
-        public async Task<string> Query(string ipAddress, string dataSource)
+        public async Task<object> Query(string ipAddress, string dataSource)
         {
-            Object result;
+            object result;
 
             try
             {
@@ -40,7 +40,7 @@ namespace GeoIP.Executers
                 };
             }
 
-            return JsonConvert.SerializeObject(result);
+            return result;
         }
     }
 }

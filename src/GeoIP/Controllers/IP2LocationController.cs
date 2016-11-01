@@ -32,7 +32,7 @@ namespace GeoIP.Controllers
 
             var geolocation = new IP2LocationQuery().Query(ipAddress, dataSource);
 
-            return Json(geolocation.Result);
+            return this.Json(geolocation.Result);
         }
     }
 }
