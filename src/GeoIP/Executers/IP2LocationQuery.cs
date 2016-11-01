@@ -15,37 +15,48 @@ namespace GeoIP.Executers
         {
             string url = $"{dataSource}?ipaddress={ipAddress}";
 
-            using (var client = new HttpClient())
-            using (var response = await client.GetAsync(url))
-            using (var content = response.Content)
+            Object result;
+
+            try
             {
-                var queriedResult = await content.ReadAsStringAsync();
-
-                var json = JObject.Parse(queriedResult);
-
-                Object result;
-                var errorMessage = (string)json["error_message"];
-                if (errorMessage == null)
+                using (var client = new HttpClient())
+                using (var response = await client.GetAsync(url))
+                using (var content = response.Content)
                 {
-                    result = new Geolocation()
-                    {
-                        IPAddress = (string)json["ipaddress"],
-                        City = (string)json["city"],
-                        Country = (string)json["country"],
-                        Latitude = (double)json["latitude"],
-                        Longitude = (double)json["longitude"]
-                    };
-                }
-                else
-                {
-                    result = new Error()
-                    {
-                        ErrorMessage = errorMessage
-                    };
-                }
+                    var queriedResult = await content.ReadAsStringAsync();
 
-                return JsonConvert.SerializeObject(result);
+                    var json = JObject.Parse(queriedResult);
+
+                    var errorMessage = (string)json["error_message"];
+                    if (errorMessage == null)
+                    {
+                        result = new Geolocation()
+                        {
+                            IPAddress = (string)json["ipaddress"],
+                            City = (string)json["city"],
+                            Country = (string)json["country"],
+                            Latitude = (double?)json["latitude"],
+                            Longitude = (double?)json["longitude"]
+                        };
+                    }
+                    else
+                    {
+                        result = new Error()
+                        {
+                            ErrorMessage = errorMessage
+                        };
+                    }
+                }
             }
+            catch (Exception ex)
+            {
+                result = new Error()
+                {
+                    ErrorMessage = ex.Message
+                };
+            }
+
+            return JsonConvert.SerializeObject(result);
         }
     }
 }
