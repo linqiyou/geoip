@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Hosting;
 using GeoIP.Executers;
 using System.Text;
+using Microsoft.Extensions.Options;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,17 +19,19 @@ namespace GeoIP.Controllers
     public class MaxMindController : Controller
     {
         private readonly IHostingEnvironment hostingEnvironment;
+        private readonly DataSource dataSource;
 
-        public MaxMindController(IHostingEnvironment hostingEnvironment)
+        public MaxMindController(IHostingEnvironment hostingEnvironment, IOptions<DataSource> dataSource)
         {
             this.hostingEnvironment = hostingEnvironment;
+            this.dataSource = dataSource.Value;
         }
 
         // GET: api/maxmind?ipaddress=123.123.123.123
         [HttpGet]
         public JsonResult GetGeoLocation([FromQuery]string ipAddress)
         {
-            var dataSource = this.hostingEnvironment.ContentRootPath + "/Databases/MaxMind/GeoLite2-City.mmdb";
+            var dataSource = $"{this.hostingEnvironment.ContentRootPath}/{this.dataSource.MaxMind}";
 
             var geolocation = new MaxMindQuery().Query(ipAddress, dataSource);
 

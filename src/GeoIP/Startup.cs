@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using GeoIP.Models;
 
 namespace GeoIP
 {
@@ -19,6 +20,7 @@ namespace GeoIP
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile("datasource.json", optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables();
 
             if (env.IsDevelopment())
@@ -36,6 +38,8 @@ namespace GeoIP
         {
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
+
+            services.Configure<DataSource>(datasource => Configuration.GetSection("DataSource").Bind(datasource));
 
             services.AddMvc();
         }
