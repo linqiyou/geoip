@@ -19,10 +19,7 @@ namespace GeoIP.Executers
             {
                 using (var reader = new DatabaseReader(dataSource))
                 {
-                    var city = await Task.Run(() =>
-                    {
-                        return reader.City(ipAddress);
-                    }); 
+                    var city = await Task.Run(() => { return reader.City(ipAddress); });
 
                     result = new Geolocation()
                     {
