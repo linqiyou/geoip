@@ -22,7 +22,7 @@ namespace GeoIP.Executers
             try
             {
                 using (var client = new HttpClient())
-                using (var response = await client.GetAsync(dataSource))
+                using (var response = await client.GetAsync(url))
                 using (var content = response.Content)
                 {
                     var queriedResult = await content.ReadAsStringAsync();
