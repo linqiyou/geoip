@@ -1,4 +1,5 @@
 ﻿using GeoIP.Models;
+using GeoIP.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -13,14 +14,14 @@ namespace GeoIP.Executers
     {
         public async Task<object> Query(string ipAddress, string dataSource)
         {
-            string url = $"{dataSource}?ipaddress={ipAddress}";
+            string url = UrlTemplate.GetEndpointUrl(dataSource, ipAddress);
 
             object result;
 
             try
             {
                 using (var client = new HttpClient())
-                using (var response = await client.GetAsync(url))
+                using (var response = await client.GetAsync(dataSource))
                 using (var content = response.Content)
                 {
                     var queriedResult = await content.ReadAsStringAsync();
