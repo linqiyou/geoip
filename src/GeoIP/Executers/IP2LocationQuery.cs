@@ -1,4 +1,5 @@
-﻿using GeoIP.Models;
+﻿using GeoIP.Constants;
+using GeoIP.Models;
 using GeoIP.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -28,16 +29,16 @@ namespace GeoIP.Executers
 
                     var json = JObject.Parse(queriedResult);
 
-                    var errorMessage = (string)json["error_message"];
+                    var errorMessage = (string)json[ResultMembers.ErrorMessage];
                     if (errorMessage == null)
                     {
                         result = new Geolocation()
                         {
-                            IPAddress = (string)json["ipaddress"],
-                            City = (string)json["city"],
-                            Country = (string)json["country"],
-                            Latitude = (double?)json["latitude"],
-                            Longitude = (double?)json["longitude"]
+                            IPAddress = (string)json[ResultMembers.IPAddress],
+                            City = (string)json[ResultMembers.City],
+                            Country = (string)json[ResultMembers.Country],
+                            Latitude = (double?)json[ResultMembers.Latitude],
+                            Longitude = (double?)json[ResultMembers.Longitude]
                         };
                     }
                     else

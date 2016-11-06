@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using GeoIP.Constants;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace GeoIP.Models
 {
     public class Error
     {
-        [JsonProperty(PropertyName = "error_message")]
+        [JsonProperty(PropertyName = ResultMembers.ErrorMessage)]
         public string ErrorMessage { get; set; }
     }
 }
