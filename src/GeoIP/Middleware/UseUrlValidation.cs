@@ -8,22 +8,25 @@ using System.Text.RegularExpressions;
 using System.Net;
 using GeoIP.Models;
 using Newtonsoft.Json;
+using GeoIP.Constants;
 
 namespace GeoIP.Middleware
 {
     // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
     public class UseUrlValidation
     {
-        private readonly RequestDelegate _next;
+        private const string endpointValidationRegex = @"^/api/(?:maxmind|ip2location)$";
+
+        private readonly RequestDelegate next;
 
         public UseUrlValidation(RequestDelegate next)
         {
-            _next = next;
+            this.next = next;
         }
 
         public async Task Invoke(HttpContext httpContext)
         {
-            var regex = new Regex(@"^/api/(?:maxmind|ip2location)$", RegexOptions.IgnoreCase);
+            var regex = new Regex(endpointValidationRegex, RegexOptions.IgnoreCase);
             if (regex.Match(httpContext.Request.Path).Success)
             {
                 var ipaddress = httpContext.Request.Query.FirstOrDefault(query => query.Key == "ipaddress");
@@ -31,10 +34,10 @@ namespace GeoIP.Middleware
                 {
                     var error = new Error()
                     {
-                        ErrorMessage = "IP address not provided"
+                        ErrorMessage = ErrorMessages.IPAddressNotProvided
                     };
 
-                    httpContext.Response.ContentType = "application/json";
+                    httpContext.Response.ContentType = ContentTypes.ApplicationJson;
 
                     await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(error));
                     return;
@@ -48,10 +51,10 @@ namespace GeoIP.Middleware
                 {
                     var error = new Error()
                     {
-                        ErrorMessage = "Invalid IP address provided"
+                        ErrorMessage = ErrorMessages.InvalidIPAddressProvided
                     };
 
-                    httpContext.Response.ContentType = "application/json";
+                    httpContext.Response.ContentType = ContentTypes.ApplicationJson;
 
                     await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(error));
                     return;
@@ -59,7 +62,7 @@ namespace GeoIP.Middleware
 
             }
 
-            await _next.Invoke(httpContext);
+            await this.next.Invoke(httpContext);
         }
     }
 
