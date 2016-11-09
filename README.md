@@ -10,6 +10,11 @@ Install .NET Core. Follow the instruction at https://www.microsoft.com/net/core#
 
 Install Node.js. Follow the instruction at https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04.
 
+Install Bower.
+```bash
+npm install -g bower
+```
+
 Install PM2.
 ```bash
 npm install -g pm2
@@ -21,6 +26,11 @@ Download the database at http://dev.maxmind.com/geoip/geoip2/geolite2/.
 Retrieve project dependencies.
 ```bash
 dotnet restore
+```
+
+Retrieve Bower dependencies.
+```bash
+bower install
 ```
 
 Start the service using PM2.
