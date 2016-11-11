@@ -10,6 +10,8 @@ using Newtonsoft.Json.Linq;
 using GeoIP.Models;
 using GeoIP.Executers;
 using Microsoft.Extensions.Options;
+using GeoIP.Utils;
+using GeoIP.Constants;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -29,8 +31,20 @@ namespace GeoIP.Controllers
 
         // GET api/ip2location?ipaddress=123.123.123.123
         [HttpGet]
-        public JsonResult GetGeoLocation([FromQuery]string ipAddress)
+        public JsonResult GetGeoLocation([FromQuery]string ipAddress, string domainName)
         {
+            if (!string.IsNullOrEmpty(domainName))
+            {
+                ipAddress = DomainNameToIP.Resolve(domainName).Result;
+                if (string.IsNullOrEmpty(ipAddress))
+                {
+                    return this.Json(new Error()
+                    {
+                        ErrorMessage = $"{ErrorMessages.UnableToResolveDomainName} {domainName}"
+                    });
+                }
+            }
+
             var dataSource = this.dataSource.IP2Location;
 
             var geolocation = new IP2LocationQuery().Query(ipAddress, dataSource);

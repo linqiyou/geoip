@@ -8,8 +8,6 @@ namespace GeoIP.Utils
     public static class UrlTemplate
     {
         public static string GetEndpointUrl(string baseUrl, string ipAddress)
-        {
-            return $"{baseUrl}?ipaddress={ipAddress}";
-        }
+            => $"{baseUrl}?ipaddress={ipAddress}";
     }
 }

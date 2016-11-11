@@ -9,6 +9,7 @@ using System.Net;
 using GeoIP.Models;
 using Newtonsoft.Json;
 using GeoIP.Constants;
+using GeoIP.Utils;
 
 namespace GeoIP.Middleware
 {
@@ -26,40 +27,39 @@ namespace GeoIP.Middleware
 
         public async Task Invoke(HttpContext httpContext)
         {
+            Error error = null;
+
             var regex = new Regex(endpointValidationRegex, RegexOptions.IgnoreCase);
             if (regex.Match(httpContext.Request.Path).Success)
             {
-                var ipaddress = httpContext.Request.Query.FirstOrDefault(query => query.Key == "ipaddress");
-                if (string.IsNullOrEmpty(ipaddress.Value))
+                var ipaddress = httpContext.Request.Query.FirstOrDefault(query => query.Key == "ipaddress").Value;
+                var domainName = httpContext.Request.Query.FirstOrDefault(query => query.Key == "domainname").Value;
+
+                if (string.IsNullOrEmpty(ipaddress) && string.IsNullOrEmpty(domainName))
                 {
-                    var error = new Error()
+                    error = new Error()
                     {
-                        ErrorMessage = ErrorMessages.IPAddressNotProvided
+                        ErrorMessage = ErrorMessages.EitherIPAddressOrDomainNameMustBeProvided
                     };
-
-                    httpContext.Response.ContentType = ContentTypes.ApplicationJson;
-
-                    await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(error));
-                    return;
                 }
 
-                try
+                if (!string.IsNullOrEmpty(ipaddress) && string.IsNullOrEmpty(domainName))
                 {
-                    IPAddress.Parse(ipaddress.Value);
+                    error = IPAddressValidator.Validate(ipaddress);
                 }
-                catch (FormatException)
+
+                if (!string.IsNullOrEmpty(domainName) && string.IsNullOrEmpty(ipaddress))
                 {
-                    var error = new Error()
-                    {
-                        ErrorMessage = ErrorMessages.InvalidIPAddressProvided
-                    };
-
-                    httpContext.Response.ContentType = ContentTypes.ApplicationJson;
-
-                    await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(error));
-                    return;
+                    error = DomainNameValidator.Validate(domainName);
                 }
+            }
 
+            if (error != null)
+            {
+                httpContext.Response.ContentType = ContentTypes.ApplicationJson;
+
+                await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(error));
+                return;
             }
 
             await this.next.Invoke(httpContext);

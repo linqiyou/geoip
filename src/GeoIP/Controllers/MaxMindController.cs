@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Hosting;
 using GeoIP.Executers;
 using System.Text;
 using Microsoft.Extensions.Options;
+using GeoIP.Utils;
+using GeoIP.Constants;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -29,8 +31,20 @@ namespace GeoIP.Controllers
 
         // GET: api/maxmind?ipaddress=123.123.123.123
         [HttpGet]
-        public JsonResult GetGeoLocation([FromQuery]string ipAddress)
+        public JsonResult GetGeoLocation([FromQuery]string ipAddress, string domainName)
         {
+            if (!string.IsNullOrEmpty(domainName))
+            {
+                ipAddress = DomainNameToIP.Resolve(domainName).Result;
+                if (string.IsNullOrEmpty(ipAddress))
+                {
+                    return this.Json(new Error()
+                    {
+                        ErrorMessage = $"{ErrorMessages.UnableToResolveDomainName} {domainName}"
+                    });
+                }
+            }
+
             var dataSource = $"{this.hostingEnvironment.ContentRootPath}/{this.dataSource.MaxMind}";
 
             var geolocation = new MaxMindQuery().Query(ipAddress, dataSource);
