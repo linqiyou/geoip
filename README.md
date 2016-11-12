@@ -1,5 +1,5 @@
 # geoip
-RESTful service for retrieving geolocations from IP addresses using ASP.NET Core.
+RESTful service for retrieving geolocations from IP addresses or domain names using ASP.NET Core.
 
 Geolocation data provided by MaxMind GeoLite2 and IP2Location LITE databases.
 
@@ -40,30 +40,49 @@ pm2 start --name geoip dotnet -- run
 
 ## Endpoints
 ### MaxMind
+
+#### Search By IP Address
 ```
 http://geoip.tech/api/maxmind?ipaddress={ip-address}
 ```
 
+#### Search By Domain Name
+```
+http://geoip.tech/api/maxmind?domainname={domain-name}
+```
+
 ### IP2Location
+#### Search By IP Address
 ```
 http://geoip.tech/api/ip2location?ipaddress={ip-address}
 ```
 
-Make a HTTP GET request to the endpoints to retrieve the IP address geolocation. Replace {ip-address} with the IP address to be searched. 
+#### Search By Domain Name
+```
+http://geoip.tech/api/ip2location?domainname={domain-name}
+```
+
+Make a HTTP GET request to the endpoints to retrieve the IP address or domain name geolocation. Replace {ip-address} with the IP address or {domain-name} with the domain name to be searched. 
 
 ## Usage Example
+#### Search By IP Address
 ```bash
-curl http://geoip.tech/api/maxmind?ipaddress=123.123.123.123
+curl http://geoip.tech/api/maxmind?ipaddress=192.30.253.113
+```
+
+#### Search By Domain Name
+```bash
+curl http://geoip.tech/api/maxmind?domainname=github.com
 ```
 
 ### Result Example
 ```javascript
 {
-    "ipaddress":"123.123.123.123",
-    "city":"Beijing",
-    "country":"China",
-    "latitude":39.9289,
-    "longitude":116.3883
+    "ipaddress":"192.30.253.113",
+    "city":"San Francisco",
+    "country":"United States",
+    "latitude":37.7697,
+    "longitude":-122.3933
 }
 ```
 
