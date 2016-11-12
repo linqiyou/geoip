@@ -4,31 +4,41 @@
 
 <div class="row">
     <div class="col-md-12">
-        <h3>Geolocation Service</h3>
-        RESTful service for retrieving geolocations from IP addresses using MaxMind GeoLite2 and IP2Location Lite databases.
+        <h2>Geolocation Service</h2>
+        RESTful service for retrieving geolocations from IP addresses or domain names using MaxMind GeoLite2 and IP2Location Lite databases.
     </div>
     <div class="col-md-12">
-        <h3>Endpoints</h3>
-        <h4>MaxMind</h4>
+        <h2>Endpoints</h2>
+        <h3>MaxMind</h3>
+        <h4>Search By IP Address</h4>
         <pre>http://geoip.tech/api/maxmind?ipaddress={ip-address}</pre>
-        <h4>IP2Location</h4>
+        <h4>Search By Domain Name</h4>
+        <pre>http://geoip.tech/api/maxmind?domainname={domain-name}</pre>
+        <h3>IP2Location</h3>
+        <h4>Search By IP Address</h4>
         <pre>http://geoip.tech/api/ip2location?ipaddress={ip-address}</pre>
-        Make a HTTP GET request to the endpoints to retrieve the IP address geolocation. Replace {ip-address} with the IP address to be searched.
+        <h4>Search By Domain Name</h4>
+        <pre>http://geoip.tech/api/ip2location?domainname={domain-name}</pre>
+        Make a HTTP GET request to the endpoints to retrieve the IP address or domain name geolocation.
+        Replace {ip-address} with the IP address or {domain-name} with the domain name to be searched.
     </div>
     <div class="col-md-12">
-        <h3>Usage Example</h3>
-        <pre>curl http://geoip.tech/api/maxmind?ipaddress=123.123.123.123</pre>
-        <h4>Result Example</h4> 
+        <h2>Usage Example</h2>
+        <h4>Search By IP Address</h4>
+        <pre>curl http://geoip.tech/api/maxmind?ipaddress=192.30.253.113</pre>
+        <h4>Search By Domain Name</h4>
+        <pre>curl http://geoip.tech/api/maxmind?domainname=github.com</pre>
+        <h3>Result Example</h3> 
         <pre>
         {
-            "ipaddress":"123.123.123.123",
-            "city":"Beijing",
-            "country":"China",
-            "latitude":39.9289,
-            "longitude":116.3883
+            "ipaddress":"192.30.253.113",
+            "city":"San Francisco",
+            "country":"United States",
+            "latitude":37.7697,
+            "longitude":-122.3933
         }
         </pre>
-        <h4>Error Example</h4>
+        <h3>Error Example</h3>
         <pre>
         {
             "error_message":"Invalid IP address provided"
