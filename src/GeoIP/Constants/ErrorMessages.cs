@@ -8,7 +8,7 @@ namespace GeoIP.Constants
     public static class ErrorMessages
     {
         public const string IPAddressNotProvided = "IP address not provided";
-        public const string InvalidIPAddressProvided = "Invalid IP address Provided";
+        public const string InvalidIPAddressProvided = "Invalid IP address provided";
 
         public const string DomainNameNotProvided = "Domain name not provided";
         public const string InvalidDomainNameProvided = "Invalid domain name provided";
